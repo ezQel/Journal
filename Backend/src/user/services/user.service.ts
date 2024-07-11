@@ -1,8 +1,12 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 import { User } from '../entities/user.entity';
-import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -26,21 +30,36 @@ export class UserService {
     return this.userRepository.save(newUser, {});
   }
 
-  async updateUserName(id: number, newUsername: string): Promise<User> {
-    const userToUpdate = await this.findbyId(id);
+  async updateUserName(userId: number, newUsername: string): Promise<User> {
+    const userToUpdate = await this.findbyId(userId);
     userToUpdate.username = newUsername;
     return this.userRepository.save(userToUpdate);
   }
 
   async updatePassword(
-    id: number,
-    oldPassword: string,
+    userId: number,
+    currentPassword: string,
     newPassword: string,
-  ): Promise<User> {
-    if (oldPassword === newPassword) {
-      throw new BadRequestException();
-    }
-    const userToUpdate = await this.findbyId(id);
-    return this.userRepository.save(userToUpdate);
+  ): Promise<boolean> {
+    if (currentPassword === newPassword) return true;
+
+    const userToUpdate = await this.findbyId(userId);
+
+    if (!userToUpdate)
+      throw new InternalServerErrorException('Could not find user to update');
+
+    const currentPasswordIsCorrect = await bcrypt.compare(
+      currentPassword,
+      userToUpdate.password,
+    );
+
+    if (!currentPasswordIsCorrect)
+      throw new ForbiddenException('You entered the wrong password');
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    userToUpdate.password = hashedPassword;
+
+    await this.userRepository.save(userToUpdate);
+    return true;
   }
 }
