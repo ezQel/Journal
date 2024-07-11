@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../entities/user.entity';
@@ -11,8 +11,12 @@ export class UserService {
     private userRepository: Repository<User>,
   ) {}
 
-  findOne(id: number): Promise<User> {
+  findbyId(id: number): Promise<User> {
     return this.userRepository.findOne({ where: { id } });
+  }
+
+  findbyUsername(username: string): Promise<User> {
+    return this.userRepository.findOne({ where: { username } });
   }
 
   async create(user: Partial<User>): Promise<User> {
@@ -22,9 +26,9 @@ export class UserService {
     return this.userRepository.save(newUser, {});
   }
 
-  async updateUserName(id: number, username: string): Promise<User> {
-    const userToUpdate = await this.findOne(id);
-    userToUpdate.username = username;
+  async updateUserName(id: number, newUsername: string): Promise<User> {
+    const userToUpdate = await this.findbyId(id);
+    userToUpdate.username = newUsername;
     return this.userRepository.save(userToUpdate);
   }
 
@@ -33,8 +37,10 @@ export class UserService {
     oldPassword: string,
     newPassword: string,
   ): Promise<User> {
-    console.log(oldPassword, newPassword);
-    const userToUpdate = await this.findOne(id);
+    if (oldPassword === newPassword) {
+      throw new BadRequestException();
+    }
+    const userToUpdate = await this.findbyId(id);
     return this.userRepository.save(userToUpdate);
   }
 }
