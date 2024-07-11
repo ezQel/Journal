@@ -1,16 +1,22 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from 'src/user/dtos/create-user.dto';
 import { User } from 'src/user/entities/user.entity';
 import { UserService } from 'src/user/services/user.service';
+import { Repository } from 'typeorm';
+import { RevokedToken } from '../entities/revoked-token.entity';
 import { LoginResponse } from '../interfaces/login-response';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class AuthService {
   constructor(
     private userService: UserService,
     private jwtService: JwtService,
+    @InjectRepository(RevokedToken)
+    private revokedTokenRepository: Repository<RevokedToken>,
   ) {}
 
   async registerUser(createUserDto: CreateUserDto): Promise<LoginResponse> {
@@ -27,7 +33,7 @@ export class AuthService {
 
   login(user: User): LoginResponse {
     const payload = { username: user.username, sub: user.id };
-    return { accessToken: this.jwtService.sign(payload) };
+    return { accessToken: this.jwtService.sign(payload, { jwtid: uuidv4() }) };
   }
 
   async validateUser(username: string, password: string): Promise<User> {
@@ -43,5 +49,13 @@ export class AuthService {
     }
 
     return null;
+  }
+
+  revokeToken(jti: string): Promise<RevokedToken> {
+    return this.revokedTokenRepository.save({ jti });
+  }
+
+  findRevokedToken(jti: string): Promise<RevokedToken> {
+    return this.revokedTokenRepository.findOne({ where: { jti } });
   }
 }

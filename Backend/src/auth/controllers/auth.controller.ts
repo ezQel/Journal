@@ -17,8 +17,9 @@ export class AuthController {
   }
 
   @Post('logout')
-  logout(): Promise<void> {
-    return Promise.resolve(null);
+  async logout(@Request() req): Promise<boolean> {
+    await this.authService.revokeToken(req.user.jti);
+    return true;
   }
 
   @SkipAuth()

@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class ReokedToken {
+export class RevokedToken {
   @PrimaryGeneratedColumn()
   id: number;
 

@@ -6,11 +6,14 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { RevokedToken } from './entities/revoked-token.entity';
 
 @Module({
   imports: [
     UserModule,
     PassportModule,
+    TypeOrmModule.forFeature([RevokedToken]),
     JwtModule.register({
       secret: process.env.JWT_SECRET || '9f86d081884c7d659a2feaa0c55ad015',
       signOptions: { expiresIn: '7d' },
