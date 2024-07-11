@@ -31,7 +31,7 @@ export class CategoryController {
   findAll(@Request() req) {
     const user = req.user;
     delete user.jti;
-    return this.categoryService.findAll(user);
+    return this.categoryService.findUsercategories(user);
   }
 
   @Get(':id')

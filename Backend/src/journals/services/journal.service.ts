@@ -1,26 +1,49 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateJournalDto } from '../dtos/create-journal.dto';
 import { UpdateJournalDto } from '../dtos/update-journal.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Journal } from '../entities/journal.entity';
+import { Repository } from 'typeorm';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class JournalService {
-  create(createJournalDto: CreateJournalDto) {
-    return 'This action adds a new journal';
+  constructor(
+    @InjectRepository(Journal) private journalRepository: Repository<Journal>,
+  ) {}
+
+  create(createJournalDto: CreateJournalDto, user: User): Promise<Journal> {
+    createJournalDto.user = user;
+    createJournalDto.category = { id: createJournalDto.categoryId };
+    return this.journalRepository.save(createJournalDto);
   }
 
-  findAll() {
-    return `This action returns all journals`;
+  findUserJournals(user: User): Promise<Journal[]> {
+    return this.journalRepository.find({ where: { user } });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} journal`;
+  async findById(id: number, user: User): Promise<Journal> {
+    const journal = await this.journalRepository.findOne({
+      where: { id, user },
+    });
+
+    if (!journal) throw new BadRequestException('Journal not found');
+
+    return journal;
   }
 
-  update(id: number, updateJournalDto: UpdateJournalDto) {
-    return `This action updates a #${id} journal`;
+  async update(
+    id: number,
+    updateJournalDto: UpdateJournalDto,
+    user: User,
+  ): Promise<Journal> {
+    await this.findById(id, user); // Validate journal existence and ownership
+    return this.journalRepository.save({ id, ...updateJournalDto });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} journal`;
+  async remove(id: number, user: User): Promise<boolean> {
+    const journal = await this.findById(id, user);
+    await this.journalRepository.remove(journal);
+    return true;
   }
 }

@@ -23,8 +23,12 @@ export class CategoryService {
     return this.categoryRepository.save({ name: name, user });
   }
 
-  findAll(user: User): Promise<Category[]> {
-    return this.categoryRepository.find({ where: { user } });
+  findUsercategories(user: User): Promise<Category[]> {
+    return this.categoryRepository.find({
+      where: { user },
+      relations: ['user'],
+      select: ['user'],
+    });
   }
 
   findByCategoryName(name: string, user: User): Promise<Category> {
