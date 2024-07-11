@@ -16,7 +16,7 @@ import { TokenService } from './services/token.service';
     PassportModule,
     TypeOrmModule.forFeature([RevokedToken]),
     JwtModule.register({
-      secret: process.env.JWT_SECRET || '9f86d081884c7d659a2feaa0c55ad015',
+      secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '7d' },
     }),
   ],
