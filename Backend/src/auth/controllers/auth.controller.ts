@@ -22,8 +22,8 @@ export class AuthController {
   }
 
   @SkipAuth()
-  @Post('signup')
-  signUp(@Body() createUserDto: CreateUserDto): Promise<LoginResponse> {
-    return this.authService.signup(createUserDto);
+  @Post('register')
+  register(@Body() createUserDto: CreateUserDto): Promise<LoginResponse> {
+    return this.authService.registerUser(createUserDto);
   }
 }

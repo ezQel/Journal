@@ -13,7 +13,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signup(createUserDto: CreateUserDto): Promise<LoginResponse> {
+  async registerUser(createUserDto: CreateUserDto): Promise<LoginResponse> {
     let user: User;
 
     try {
