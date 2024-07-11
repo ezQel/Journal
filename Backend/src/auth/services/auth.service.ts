@@ -50,12 +50,4 @@ export class AuthService {
 
     return null;
   }
-
-  revokeToken(jti: string): Promise<RevokedToken> {
-    return this.revokedTokenRepository.save({ jti });
-  }
-
-  findRevokedToken(jti: string): Promise<RevokedToken> {
-    return this.revokedTokenRepository.findOne({ where: { jti } });
-  }
 }

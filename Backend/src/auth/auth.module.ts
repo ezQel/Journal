@@ -8,6 +8,7 @@ import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RevokedToken } from './entities/revoked-token.entity';
+import { TokenService } from './services/token.service';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { RevokedToken } from './entities/revoked-token.entity';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, TokenService, LocalStrategy, JwtStrategy],
 })
 export class AuthModule {
   constructor() {}
