@@ -4,10 +4,11 @@ import { APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { JournalModule } from './journals/journal.module';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
-    AuthModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -19,6 +20,8 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
       entities: ['dist/**/*.entity{.ts,.js}'],
       synchronize: process.env.NODE_ENV !== 'production',
     }),
+    AuthModule,
+    CategoryModule,
   ],
   providers: [
     {
