@@ -1,13 +1,15 @@
+import { Category } from 'src/category/entities/category.entity';
+import { BaseEntity } from 'src/common/entities/base.entity';
 import { User } from 'src/user/entities/user.entity';
-import { Column, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToOne } from 'typeorm';
 
-export class Journal {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+@Entity()
+export class Journal extends BaseEntity {
   @OneToOne(() => User)
-  @JoinColumn()
   user: User;
+
+  @ManyToOne(() => Category, (category) => category.journals)
+  category: Category;
 
   @Column()
   date: string;

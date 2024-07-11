@@ -1,10 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity } from 'src/common/entities/base.entity';
+import { Column, Entity } from 'typeorm';
 
 @Entity()
-export class RevokedToken {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class RevokedToken extends BaseEntity {
   @Column({ unique: true })
   jti: string;
 }

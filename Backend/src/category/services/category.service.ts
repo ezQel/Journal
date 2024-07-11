@@ -33,15 +33,7 @@ export class CategoryService {
 
   async findById(id: number, user: User): Promise<Category> {
     return this.categoryRepository
-      .findOne({
-        where: { id, user },
-        relations: ['user'],
-        select: {
-          id: true,
-          name: true,
-          user: { id: true, username: true },
-        },
-      })
+      .findOne({ where: { id, user } })
       .catch(() => {
         throw new BadRequestException(
           'Category not found or you do not have permissions to access this category',

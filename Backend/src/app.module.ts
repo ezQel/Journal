@@ -22,6 +22,7 @@ import { CategoryModule } from './category/category.module';
     }),
     AuthModule,
     CategoryModule,
+    JournalModule,
   ],
   providers: [
     {
