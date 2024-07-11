@@ -23,6 +23,12 @@ export class UserService {
     return this.userRepository.findOne({ where: { username } });
   }
 
+  async getProfile(userId: number): Promise<User> {
+    const user = await this.findbyId(userId);
+    delete user.password;
+    return user;
+  }
+
   async create(user: Partial<User>): Promise<User> {
     const hashedPassword = await bcrypt.hash(user.password, 10);
     user.password = hashedPassword;
@@ -41,8 +47,6 @@ export class UserService {
     currentPassword: string,
     newPassword: string,
   ): Promise<boolean> {
-    if (currentPassword === newPassword) return true;
-
     const userToUpdate = await this.findbyId(userId);
 
     if (!userToUpdate)
@@ -55,6 +59,8 @@ export class UserService {
 
     if (!currentPasswordIsCorrect)
       throw new ForbiddenException('You entered the wrong password');
+
+    if (currentPassword === newPassword) return true;
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     userToUpdate.password = hashedPassword;

@@ -1,10 +1,16 @@
-import { Body, Controller, Post, Request } from '@nestjs/common';
+import { Body, Controller, Get, Post, Request } from '@nestjs/common';
 import { User } from '../entities/user.entity';
 import { UserService } from '../services/user.service';
 
-@Controller('users')
+@Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+  @Get('profile')
+  getProfile(@Request() req: { user: User }): Promise<User> {
+    const userId = req.user.id;
+    return this.userService.getProfile(userId);
+  }
 
   @Post('update-username')
   updateUsername(
