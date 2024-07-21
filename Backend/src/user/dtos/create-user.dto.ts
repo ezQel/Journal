@@ -1,8 +1,10 @@
+import { Transform } from 'class-transformer';
 import { IsNotEmpty, IsString, IsStrongPassword } from 'class-validator';
 
 export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
+  @Transform(({ value }) => value?.toLowerCase())
   readonly username: string;
 
   @IsString()

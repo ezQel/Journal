@@ -32,6 +32,7 @@ export class AuthService {
   }
 
   async validateUser(username: string, password: string): Promise<User> {
+    username = username.toLowerCase();
     const user = await this.userService.findbyUsername(username);
 
     if (!user) return null;

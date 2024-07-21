@@ -13,6 +13,7 @@ export class AuthController {
     private readonly authService: AuthService,
     private tokenService: TokenService,
   ) {}
+
   @SkipAuth()
   @UseGuards(LocalAuthGuard)
   @Post('login')
