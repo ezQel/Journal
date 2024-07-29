@@ -13,7 +13,7 @@ export default function RegisterScreen() {
   const [formData, setData] = useState<RegistrationInfo>({});
   const [isValid, setIsValid] = useState(false);
   const [passwordsMatch, setPasswordsMatch] = useState(true);
-  const [errorMessage, setErrorMessage] = useState();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     const { username, password, repeatPassword } = formData;
@@ -28,6 +28,8 @@ export default function RegisterScreen() {
   }, [formData]);
 
   async function register() {
+    setErrorMessage(null);
+
     try {
       const response = await authService.register(formData);
       await store.setToken(response.accessToken);

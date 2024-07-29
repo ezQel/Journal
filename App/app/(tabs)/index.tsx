@@ -1,5 +1,5 @@
-import SummaryScreen from "../summary/SummaryScreen";
+import JournalListScreen from "../journals/JournalListScreen";
 
-export default function Summary() {
-  return <SummaryScreen />;
+export default function Journals() {
+  return <JournalListScreen />;
 }

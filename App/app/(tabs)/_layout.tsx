@@ -31,6 +31,10 @@ export default function TabLayout() {
     }
   }, [isAuthenticated, store]);
 
+  if (isAuthenticated === null) {
+    return null;
+  }
+
   if (isAuthenticated !== null && !isAuthenticated) {
     return <Redirect href="/auth/LoginScreen" />;
   }
@@ -49,15 +53,6 @@ export default function TabLayout() {
     >
       <Tabs.Screen
         name="index"
-        options={{
-          title: "Summary",
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? "pie-chart" : "pie-chart-outline"} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="journals"
         options={{
           title: "Journals",
           tabBarIcon: ({ color, focused }) => <TabBarIcon name={focused ? "book" : "book-outline"} color={color} />,

@@ -12,13 +12,15 @@ export default function LoginScreen() {
   const router = useRouter();
   const [formData, setData] = useState<LoginCredentials>({});
   const [isValid, setIsValid] = useState(false);
-  const [errorMessage, setErrorMessage] = useState();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     setIsValid(Boolean(formData.username && formData.password));
   }, [formData]);
 
   async function login() {
+    setErrorMessage(null);
+
     try {
       const response = await authService.login(formData);
       await store.setToken(response.accessToken);

@@ -8,16 +8,15 @@ import { useAuthAxois } from "../../hooks/useAuthAxios";
 
 export default function JournalListScreen() {
   const router = useRouter();
+  const axios = useAuthAxois();
   const [journals, setJournals] = useState<Journal[]>([]);
   const [errorMessage, setErrorMessage] = useState<string | undefined | null>(undefined);
-  const axios = useAuthAxois();
 
   useEffect(() => {
     async function getJournals() {
       try {
         const response = await axios.get<Journal[]>("/journals");
         setJournals(response.data);
-        console.log(response);
         setErrorMessage(null);
       } catch (e) {
         const error = e as AxiosError<Error>;
@@ -28,7 +27,7 @@ export default function JournalListScreen() {
     }
 
     getJournals();
-  }, []);
+  }, [axios]);
 
   function viewJournal(journalId: number) {
     router.navigate(`/journals/${journalId}`);
