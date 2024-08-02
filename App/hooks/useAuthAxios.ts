@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { useRouter } from "expo-router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { apiUrl } from "../config/api";
 import useStore from "./useStore";
 
@@ -20,19 +20,23 @@ export function useAuthAxois(baseUrl?: string) {
     }
   }, [store, baseUrl]);
 
-  const axiosInstance = axios.create(config);
+  const axiosInstance = useMemo(() => {
+    const instance = axios.create(config);
 
-  axiosInstance.interceptors.response.use(
-    (response) => response,
-    (error) => {
-      if (error.response && error.response.status === 401) {
-        store.clearToken().then(() => router.navigate("/auth/LoginScreen"));
-        return;
-      }
+    instance.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response && error.response.status === 401) {
+          store.clearToken().then(() => router.navigate("/auth/LoginScreen"));
+          return;
+        }
 
-      throw error;
-    },
-  );
+        throw error;
+      },
+    );
+
+    return instance;
+  }, [config, store, router]);
 
   return axiosInstance;
 }
