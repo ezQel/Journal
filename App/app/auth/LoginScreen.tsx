@@ -15,6 +15,12 @@ export default function LoginScreen() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
+    if (router.canDismiss()) {
+      router.dismissAll();
+    }
+  }, [router]);
+
+  useEffect(() => {
     setIsValid(Boolean(formData.username && formData.password));
   }, [formData]);
 
@@ -24,7 +30,7 @@ export default function LoginScreen() {
     try {
       const response = await authService.login(formData);
       await store.setToken(response.accessToken);
-      router.navigate("/(tabs)");
+      router.replace("/(tabs)");
     } catch (e: any) {
       setErrorMessage(e.message);
     }

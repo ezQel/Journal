@@ -12,7 +12,7 @@ export default function ProfileScreen() {
     try {
       await axios.post("/auth/logout");
       await store.clearToken();
-      router.navigate("/auth/LoginScreen");
+      router.replace("/auth/LoginScreen");
     } catch (error) {
       console.log(error);
     }

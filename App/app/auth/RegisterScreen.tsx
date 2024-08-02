@@ -33,8 +33,8 @@ export default function RegisterScreen() {
     try {
       const response = await authService.register(formData);
       await store.setToken(response.accessToken);
-      toast.show({ title: "Account created" });
-      router.navigate("/(tabs)/summary");
+      toast.show({ title: "Account created successfully" });
+      router.replace("/(tabs)");
     } catch (e: any) {
       setErrorMessage(e.message);
     }

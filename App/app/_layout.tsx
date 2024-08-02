@@ -1,6 +1,6 @@
 import { DarkTheme, DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Slot } from "expo-router";
+import { Slot, Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { NativeBaseProvider } from "native-base";
 import { useEffect } from "react";
@@ -29,7 +29,13 @@ export default function RootLayout() {
   return (
     <NativeBaseProvider>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <Slot />
+        <Stack initialRouteName="(tabs)">
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }}></Stack.Screen>
+          <Stack.Screen name="auth/LoginScreen" options={{ headerShown: false }}></Stack.Screen>
+          <Stack.Screen name="auth/RegisterScreen" options={{ headerShown: false }}></Stack.Screen>
+          <Stack.Screen name="journals/[id]"></Stack.Screen>
+          <Stack.Screen name="journals/JournalAddScreen" options={{ title: "New Journal" }}></Stack.Screen>
+        </Stack>
       </ThemeProvider>
     </NativeBaseProvider>
   );
