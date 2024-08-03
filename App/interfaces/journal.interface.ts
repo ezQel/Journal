@@ -8,4 +8,5 @@ export interface Journal {
   title: string;
   content: string;
   category: Category;
+  categoryId: Category;
 }

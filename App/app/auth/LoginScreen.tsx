@@ -1,4 +1,3 @@
-import { useRouter } from "expo-router";
 import { Alert, Button, Center, FormControl, HStack, Input, Text, VStack } from "native-base";
 import { useEffect, useState } from "react";
 import { TabBarIcon } from "../../components/navigation/TabBarIcon";
@@ -6,10 +5,10 @@ import { ThemedText } from "../../components/ThemedText";
 import useStore from "../../hooks/useStore";
 import { LoginCredentials } from "../../interfaces/login-credentials";
 import authService from "../../services/authService";
+import { router } from "expo-router";
 
 export default function LoginScreen() {
   const store = useStore();
-  const router = useRouter();
   const [formData, setData] = useState<LoginCredentials>({});
   const [isValid, setIsValid] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -18,7 +17,7 @@ export default function LoginScreen() {
     if (router.canDismiss()) {
       router.dismissAll();
     }
-  }, [router]);
+  });
 
   useEffect(() => {
     setIsValid(Boolean(formData.username && formData.password));

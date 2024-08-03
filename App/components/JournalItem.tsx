@@ -1,6 +1,7 @@
 import { Box, Text } from "native-base";
 import { Journal } from "../interfaces/journal.interface";
 import { useRouter } from "expo-router";
+import { formatDate } from "date-fns";
 
 interface JournalProps {
   journal: Journal;
@@ -28,7 +29,7 @@ export function JournalItem({ journal }: JournalProps) {
       </Text>
       <Text>{journal.content.slice(0, 50)}... </Text>
       <Text color="gray.300" fontSize="xs">
-        {journal.date}
+        {formatDate(journal.date, "eee, d LLL yyyy")}
       </Text>
     </Box>
   );

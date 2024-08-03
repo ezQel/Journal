@@ -6,11 +6,12 @@ import { useAuthAxois } from "./useAuthAxios";
 export default function useJournals() {
   const axios = useAuthAxois();
   const [journals, setJournals] = useState<Journal[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<Error | null>();
 
   const fetchJournals = useCallback(async () => {
-    setLoading(true);
+    setIsLoading(true);
     setError(null);
 
     try {
@@ -20,9 +21,26 @@ export default function useJournals() {
       const error = ResponseError(e);
       setError(error);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   }, [axios]);
 
-  return { journals, loading, error, fetchJournals };
+  const saveJournal = useCallback(
+    async (journal: Partial<Journal>) => {
+      setIsSaving(true);
+      setError(null);
+
+      try {
+        await axios.post<Journal>("/journals", journal);
+      } catch (e) {
+        const error = ResponseError(e);
+        setError(error);
+      } finally {
+        setIsSaving(false);
+      }
+    },
+    [axios],
+  );
+
+  return { journals, isLoading, isSaving, error, fetchJournals, saveJournal };
 }

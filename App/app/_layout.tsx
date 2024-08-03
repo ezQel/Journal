@@ -34,7 +34,7 @@ export default function RootLayout() {
           <Stack.Screen name="auth/LoginScreen" options={{ headerShown: false }}></Stack.Screen>
           <Stack.Screen name="auth/RegisterScreen" options={{ headerShown: false }}></Stack.Screen>
           <Stack.Screen name="journals/[id]"></Stack.Screen>
-          <Stack.Screen name="journals/JournalAddScreen" options={{ title: "New Journal" }}></Stack.Screen>
+          <Stack.Screen name="journals/JournalAddScreen"></Stack.Screen>
         </Stack>
       </ThemeProvider>
     </NativeBaseProvider>

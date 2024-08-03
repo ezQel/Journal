@@ -1,4 +1,4 @@
-import { AntDesign } from "@expo/vector-icons";
+import { FontAwesome6 } from "@expo/vector-icons";
 import { useFocusEffect, useRouter } from "expo-router";
 import { Alert, Fab, HStack, Icon, ScrollView, Spinner, Text, VStack } from "native-base";
 import { useCallback } from "react";
@@ -7,12 +7,11 @@ import useJournals from "../../hooks/useJournals";
 
 export default function JournalListScreen() {
   const router = useRouter();
-  const { journals, fetchJournals, loading, error } = useJournals();
+  const { journals, fetchJournals, isLoading, error } = useJournals();
 
   useFocusEffect(
     useCallback(() => {
       fetchJournals();
-      console.log("Loaded successfully");
     }, [fetchJournals]),
   );
 
@@ -20,11 +19,11 @@ export default function JournalListScreen() {
     router.navigate("/journals/JournalAddScreen");
   }
 
-  if (loading) {
+  if (isLoading) {
     return (
       <HStack space={2} justifyContent="center">
         <Spinner accessibilityLabel="Loading posts" />
-        <Text color="primary.500">Loading</Text>
+        <Text color="primary.600">Loading</Text>
       </HStack>
     );
   }
@@ -41,7 +40,7 @@ export default function JournalListScreen() {
     <>
       {journals.length === 0 && (
         <VStack h="100%" justifyContent="center" alignItems="center">
-          <Icon color="gray.400" as={AntDesign} name="folderopen" size="6xl" />
+          <Icon color="gray.400" as={FontAwesome6} name="folder-open" size="6xl" />
           <Text color="gray.500" mt="2">
             No journals
           </Text>
@@ -49,7 +48,7 @@ export default function JournalListScreen() {
       )}
       <ScrollView height="100%">
         {journals.map((journal) => (
-          <JournalItem journal={journal} />
+          <JournalItem journal={journal} key={journal.id} />
         ))}
       </ScrollView>
       <Fab
@@ -58,7 +57,7 @@ export default function JournalListScreen() {
         shadow={2}
         size="sm"
         label="Add Entry"
-        icon={<Icon color="white" as={AntDesign} name="plus" size="sm" />}
+        icon={<Icon color="white" as={FontAwesome6} name="plus" size="sm" />}
       />
     </>
   );

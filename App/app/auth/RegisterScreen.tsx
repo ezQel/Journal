@@ -1,15 +1,14 @@
-import { useRouter } from "expo-router";
+import { router } from "expo-router";
 import { Alert, Button, Center, FormControl, HStack, Input, Text, useToast, VStack } from "native-base";
 import { useEffect, useState } from "react";
+import { ThemedText } from "../../components/ThemedText";
 import useStore from "../../hooks/useStore";
 import { RegistrationInfo } from "../../interfaces/registration-info";
 import authService from "../../services/authService";
-import { ThemedText } from "../../components/ThemedText";
 
 export default function RegisterScreen() {
   const store = useStore();
   const toast = useToast();
-  const router = useRouter();
   const [formData, setData] = useState<RegistrationInfo>({});
   const [isValid, setIsValid] = useState(false);
   const [passwordsMatch, setPasswordsMatch] = useState(true);
