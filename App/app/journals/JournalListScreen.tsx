@@ -1,68 +1,55 @@
 import { AntDesign } from "@expo/vector-icons";
-import { AxiosError } from "axios";
-import { useRouter } from "expo-router";
-import { Alert, Box, Fab, Icon, ScrollView, Text } from "native-base";
-import { useEffect, useState } from "react";
-import { Journal } from "../../interfaces/journal.interface";
-import { useAuthAxois } from "../../hooks/useAuthAxios";
+import { useFocusEffect, useRouter } from "expo-router";
+import { Alert, Fab, HStack, Icon, ScrollView, Spinner, Text, VStack } from "native-base";
+import { useCallback } from "react";
+import { JournalItem } from "../../components/JournalItem";
+import useJournals from "../../hooks/useJournals";
 
 export default function JournalListScreen() {
   const router = useRouter();
-  const axios = useAuthAxois();
-  const [journals, setJournals] = useState<Journal[]>([]);
-  const [errorMessage, setErrorMessage] = useState<string | undefined | null>(undefined);
+  const { journals, fetchJournals, loading, error } = useJournals();
 
-  useEffect(() => {
-    async function getJournals() {
-      try {
-        const response = await axios.get<Journal[]>("/journals");
-        setJournals(response.data);
-        setErrorMessage(null);
-      } catch (e) {
-        const error = e as AxiosError<Error>;
-        const message = error?.response?.data?.message;
-        setErrorMessage(message);
-        console.error("Error getting journals:", error);
-      }
-    }
-
-    getJournals();
-  }, [axios]);
-
-  function viewJournal(journalId: number) {
-    router.navigate(`/journals/${journalId}`);
-  }
+  useFocusEffect(
+    useCallback(() => {
+      fetchJournals();
+      console.log("Loaded successfully");
+    }, [fetchJournals]),
+  );
 
   function addJournal() {
     router.navigate("/journals/JournalAddScreen");
   }
 
+  if (loading) {
+    return (
+      <HStack space={2} justifyContent="center">
+        <Spinner accessibilityLabel="Loading posts" />
+        <Text color="primary.500">Loading</Text>
+      </HStack>
+    );
+  }
+
+  if (error) {
+    return (
+      <Alert mx="3" status="error">
+        <Text>{error.message}</Text>
+      </Alert>
+    );
+  }
+
   return (
     <>
-      {errorMessage && (
-        <Alert mx="3" status="error">
-          <Text>{errorMessage}</Text>
-        </Alert>
+      {journals.length === 0 && (
+        <VStack h="100%" justifyContent="center" alignItems="center">
+          <Icon color="gray.400" as={AntDesign} name="folderopen" size="6xl" />
+          <Text color="gray.500" mt="2">
+            No journals
+          </Text>
+        </VStack>
       )}
       <ScrollView height="100%">
         {journals.map((journal) => (
-          <Box
-            onTouchEnd={() => viewJournal(journal.id)}
-            background="white"
-            mx="3"
-            my="1"
-            p="4"
-            rounded="lg"
-            key={journal.id}
-          >
-            <Text fontSize="md" fontWeight="semibold">
-              {journal.title}
-            </Text>
-            <Text>{journal.content.slice(0, 50)}... </Text>
-            <Text color="gray.300" fontSize="xs">
-              {journal.date}
-            </Text>
-          </Box>
+          <JournalItem journal={journal} />
         ))}
       </ScrollView>
       <Fab
