@@ -5,6 +5,7 @@ import { ThemedText } from "../../components/ThemedText";
 import useStore from "../../hooks/useStore";
 import { RegistrationInfo } from "../../interfaces/registration-info";
 import authService from "../../services/authService";
+import { ErrorAlert } from "../../components/ErrorAlert";
 
 export default function RegisterScreen() {
   const store = useStore();
@@ -40,7 +41,7 @@ export default function RegisterScreen() {
   }
 
   function navigateToLoginPage() {
-    router.navigate("/auth/LoginScreen");
+    router.replace("/auth/LoginScreen");
   }
 
   return (
@@ -51,14 +52,7 @@ export default function RegisterScreen() {
           Create an account to start journaling
         </Text>
         <VStack width="90%" mt="16" mx="3" maxW="300px">
-          {errorMessage && (
-            <Alert w="100%" mb="4" status="error">
-              <HStack space="2">
-                <Alert.Icon mt="1" />
-                <Text flex="1">{errorMessage}</Text>
-              </HStack>
-            </Alert>
-          )}
+          {errorMessage && <ErrorAlert message={errorMessage} />}
           <FormControl mb="2">
             <FormControl.Label _text={{ bold: true }}>Username</FormControl.Label>
             <Input

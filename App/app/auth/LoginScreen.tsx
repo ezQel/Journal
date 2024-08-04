@@ -1,11 +1,12 @@
-import { Alert, Button, Center, FormControl, HStack, Input, Text, VStack } from "native-base";
+import { router } from "expo-router";
+import { Button, Center, FormControl, Input, Text, VStack } from "native-base";
 import { useEffect, useState } from "react";
+import { ErrorAlert } from "../../components/ErrorAlert";
 import { TabBarIcon } from "../../components/navigation/TabBarIcon";
 import { ThemedText } from "../../components/ThemedText";
 import useStore from "../../hooks/useStore";
 import { LoginCredentials } from "../../interfaces/login-credentials";
 import authService from "../../services/authService";
-import { router } from "expo-router";
 
 export default function LoginScreen() {
   const store = useStore();
@@ -48,14 +49,7 @@ export default function LoginScreen() {
           Log in to start journaling
         </Text>
         <VStack width="90%" mt="16" mx="3" maxW="300px">
-          {errorMessage && (
-            <Alert w="100%" mb="4" status="error">
-              <HStack space="2">
-                <Alert.Icon mt="1" />
-                <Text flex="1">{errorMessage}</Text>
-              </HStack>
-            </Alert>
-          )}
+          {errorMessage && <ErrorAlert message={errorMessage} />}
           <FormControl mb="2">
             <FormControl.Label _text={{ bold: true }}>Username</FormControl.Label>
             <Input

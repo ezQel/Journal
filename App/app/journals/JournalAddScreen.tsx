@@ -6,6 +6,7 @@ import { Alert, Button, HStack, Icon, Input, Text, TextArea, useToast, VStack } 
 import { useEffect, useState } from "react";
 import { DatePicker } from "../../components/DatePicker";
 import useJournals from "../../hooks/useJournals";
+import { ErrorAlert } from "../../components/ErrorAlert";
 
 export default function JournalAddScreen() {
   const initialFormValue = {
@@ -67,14 +68,7 @@ export default function JournalAddScreen() {
         }}
       />
       <VStack h="100%">
-        {error && (
-          <Alert w="100%" mb="4" status="error">
-            <HStack space="2">
-              <Alert.Icon mt="1" />
-              <Text flex="1">{error.message}</Text>
-            </HStack>
-          </Alert>
-        )}
+        {error && <ErrorAlert message={error.message} />}
         <HStack alignItems="center">
           <DatePicker currentDate={formData.date} onChange={(date) => setFormData({ ...formData, date })} />
           <Button variant="subtle" colorScheme="secondary" size="sm" p="1" ml="2">
