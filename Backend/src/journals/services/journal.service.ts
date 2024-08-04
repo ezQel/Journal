@@ -19,7 +19,14 @@ export class JournalService {
   }
 
   findUserJournals(user: User): Promise<Journal[]> {
-    return this.journalRepository.find({ where: { user } });
+    return this.journalRepository.find({
+      where: { user },
+      relations: ['category'],
+      order: { createdAt: 'DESC' },
+      take: 10,
+      skip: 0,
+      cache: true,
+    });
   }
 
   async findById(id: number, user: User): Promise<Journal> {
