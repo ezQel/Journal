@@ -23,7 +23,7 @@ export default function ProfileScreen() {
       <VStack flex="1">
         <Text>Profile</Text>
       </VStack>
-      <Button onPress={logout} colorScheme="coolGray">
+      <Button onPress={logout} variant="outline" colorScheme="secondary">
         LOG OUT
       </Button>
     </Flex>
