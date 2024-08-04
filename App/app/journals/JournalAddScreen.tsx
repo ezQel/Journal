@@ -1,14 +1,14 @@
 import { FontAwesome6 } from "@expo/vector-icons";
-import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
+import { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { format, formatDate } from "date-fns";
 import { router, Stack, useNavigation } from "expo-router";
-import { Alert, Box, Button, Flex, HStack, Icon, Input, Text, TextArea, useToast } from "native-base";
+import { Alert, Button, HStack, Icon, Input, Text, TextArea, useToast, VStack } from "native-base";
 import { useEffect, useState } from "react";
+import { DatePicker } from "../../components/DatePicker";
 import useJournals from "../../hooks/useJournals";
-import { Journal } from "../../interfaces/journal.interface";
 
 export default function JournalAddScreen() {
-  const initialFormValue: Partial<Journal> = {
+  const initialFormValue = {
     date: format(new Date(), "yyyy-MM-dd"),
     title: "",
     content: "",
@@ -42,22 +42,9 @@ export default function JournalAddScreen() {
         }
       }
     });
+
     return unsubscribe;
   }, [navigation, isValid, formData, toast, saveJournal]);
-
-  function pickDate() {
-    DateTimePickerAndroid.open({
-      value: new Date(formData.date!),
-      onChange: (event, selectedDate) => {
-        if (selectedDate) {
-          const date = formatDate(selectedDate, "yyyy-MM-dd");
-          setFormData({ ...formData, date });
-        }
-      },
-      mode: "date",
-      is24Hour: true,
-    });
-  }
 
   async function handleSave() {
     router.back();
@@ -79,49 +66,44 @@ export default function JournalAddScreen() {
           ),
         }}
       />
-      {error && (
-        <Alert w="100%" mb="4" status="error">
-          <HStack space="2">
-            <Alert.Icon mt="1" />
-            <Text flex="1">{error.message}</Text>
-          </HStack>
-        </Alert>
-      )}
-      <Box>
+      <VStack h="100%">
+        {error && (
+          <Alert w="100%" mb="4" status="error">
+            <HStack space="2">
+              <Alert.Icon mt="1" />
+              <Text flex="1">{error.message}</Text>
+            </HStack>
+          </Alert>
+        )}
         <HStack alignItems="center">
-          <Button onPress={pickDate} variant="ghost" alignSelf="flex-start" fontWeight="bold">
-            <Flex direction="row" align="center">
-              <Text fontWeight="bold" mr="2">
-                {formatDate(formData.date!, "eee, d LLL yyyy")}
-              </Text>
-              <Icon as={FontAwesome6} name="caret-down" size="sm" color="black" />
-            </Flex>
-          </Button>
+          <DatePicker currentDate={formData.date} onChange={(date) => setFormData({ ...formData, date })} />
           <Button variant="subtle" colorScheme="secondary" size="sm" p="1" ml="2">
             Uncategorized
           </Button>
         </HStack>
-        <Input
-          onChangeText={(value) => setFormData({ ...formData, title: value })}
-          placeholder="Title"
-          borderWidth="0"
-          fontWeight="extrabold"
-          fontSize="lg"
-          backgroundColor="none"
-          w="100%"
-        />
-        <TextArea
-          onChangeText={(value) => setFormData({ ...formData, content: value })}
-          placeholder="Write your thoughts here..."
-          borderWidth="0"
-          fontSize="md"
-          backgroundColor="none"
-          autoCompleteType="none"
-          selectionColor="primary.500"
-          w="100%"
-          h="100%"
-        />
-      </Box>
+        <VStack flex="1">
+          <Input
+            onChangeText={(value) => setFormData({ ...formData, title: value })}
+            placeholder="Title"
+            borderWidth="0"
+            fontWeight="extrabold"
+            fontSize="lg"
+            backgroundColor="none"
+            w="100%"
+          />
+          <TextArea
+            flexGrow="1"
+            onChangeText={(value) => setFormData({ ...formData, content: value })}
+            placeholder="Write your thoughts here..."
+            borderWidth="0"
+            fontSize="md"
+            backgroundColor="none"
+            autoCompleteType="none"
+            selectionColor="primary.500"
+            w="100%"
+          />
+        </VStack>
+      </VStack>
     </>
   );
 }
