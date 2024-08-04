@@ -1,4 +1,4 @@
-import { Box, Text } from "native-base";
+import { Badge, Box, HStack, Text } from "native-base";
 import { Journal } from "../interfaces/journal.interface";
 import { useRouter } from "expo-router";
 import { formatDate } from "date-fns";
@@ -24,13 +24,22 @@ export function JournalItem({ journal }: JournalProps) {
       rounded="lg"
       key={journal.id}
     >
-      <Text fontSize="md" fontWeight="semibold">
-        {journal.title}
+      <Text fontSize="md" fontWeight="semibold" color="gray.700">
+        {journal.title || <Text color="gray.200">Untitled</Text>}
       </Text>
-      <Text>{journal.content.slice(0, 50)}... </Text>
+      <Text color="gray.500">{journal.content.slice(0, 50)}... </Text>
       <Text color="gray.300" fontSize="xs">
         {formatDate(journal.date, "eee, d LLL yyyy")}
       </Text>
+      <HStack>
+        <Badge rounded="lg" p="0.5">
+          {journal.category && (
+            <Text fontSize="xs" fontWeight="medium">
+              {journal.category.name}
+            </Text>
+          )}
+        </Badge>
+      </HStack>
     </Box>
   );
 }

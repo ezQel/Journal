@@ -1,18 +1,20 @@
 import { FontAwesome6 } from "@expo/vector-icons";
-import { DateTimePickerEvent } from "@react-native-community/datetimepicker";
-import { format, formatDate } from "date-fns";
+import { format } from "date-fns";
 import { router, Stack, useNavigation } from "expo-router";
-import { Alert, Button, HStack, Icon, Input, Text, TextArea, useToast, VStack } from "native-base";
+import { Button, HStack, Icon, Input, TextArea, useToast, VStack } from "native-base";
 import { useEffect, useState } from "react";
 import { DatePicker } from "../../components/DatePicker";
-import useJournals from "../../hooks/useJournals";
 import { ErrorAlert } from "../../components/ErrorAlert";
+import useJournals from "../../hooks/useJournals";
+import { CategoryPicker } from "../../components/CategoryPicker";
+import { Journal } from "../../interfaces/journal.interface";
 
 export default function JournalAddScreen() {
-  const initialFormValue = {
+  const initialFormValue: Pick<Journal, "date" | "title" | "content" | "categoryId"> = {
     date: format(new Date(), "yyyy-MM-dd"),
     title: "",
     content: "",
+    categoryId: null,
   };
 
   const [formData, setFormData] = useState(initialFormValue);
@@ -22,7 +24,7 @@ export default function JournalAddScreen() {
   const toast = useToast();
 
   useEffect(() => {
-    if (formData?.title || formData?.content) {
+    if (formData.title || formData.content) {
       setIsValid(true);
       return;
     }
@@ -34,13 +36,10 @@ export default function JournalAddScreen() {
     const unsubscribe = navigation.addListener("beforeRemove", async (e) => {
       if (isValid) {
         e.preventDefault();
+        console.log(formData);
 
-        try {
-          await saveJournal(formData);
-          navigation.dispatch(e.data.action);
-        } catch (e) {
-          console.error((e as Error)?.message);
-        }
+        await saveJournal(formData);
+        navigation.dispatch(e.data.action);
       }
     });
 
@@ -71,9 +70,10 @@ export default function JournalAddScreen() {
         {error && <ErrorAlert message={error.message} />}
         <HStack alignItems="center">
           <DatePicker currentDate={formData.date} onChange={(date) => setFormData({ ...formData, date })} />
-          <Button variant="subtle" colorScheme="secondary" size="sm" p="1" ml="2">
-            Uncategorized
-          </Button>
+          <CategoryPicker
+            onChange={(categoryId) => setFormData({ ...formData, categoryId })}
+            categoryId={formData.categoryId}
+          />
         </HStack>
         <VStack flex="1">
           <Input

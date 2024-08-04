@@ -1,11 +1,11 @@
 import { router } from "expo-router";
-import { Alert, Button, Center, FormControl, HStack, Input, Text, useToast, VStack } from "native-base";
+import { Button, Center, FormControl, Input, Text, useToast, VStack } from "native-base";
 import { useEffect, useState } from "react";
+import { ErrorAlert } from "../../components/ErrorAlert";
 import { ThemedText } from "../../components/ThemedText";
 import useStore from "../../hooks/useStore";
 import { RegistrationInfo } from "../../interfaces/registration-info";
 import authService from "../../services/authService";
-import { ErrorAlert } from "../../components/ErrorAlert";
 
 export default function RegisterScreen() {
   const store = useStore();

@@ -18,8 +18,7 @@ export default function useJournals() {
       const response = await axios.get<Journal[]>("/journals");
       setJournals(response.data);
     } catch (e) {
-      const error = ResponseError(e);
-      setError(error);
+      setError(ResponseError(e));
     } finally {
       setIsLoading(false);
     }
@@ -33,8 +32,7 @@ export default function useJournals() {
       try {
         await axios.post<Journal>("/journals", journal);
       } catch (e) {
-        const error = ResponseError(e);
-        setError(error);
+        setError(ResponseError(e));
       } finally {
         setIsSaving(false);
       }
