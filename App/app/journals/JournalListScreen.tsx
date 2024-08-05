@@ -1,13 +1,14 @@
 import { FontAwesome6 } from "@expo/vector-icons";
-import { useFocusEffect, useRouter } from "expo-router";
-import { Alert, Fab, HStack, Icon, ScrollView, Spinner, Text, VStack } from "native-base";
-import { useCallback } from "react";
+import { router, useFocusEffect } from "expo-router";
+import { Alert, Fab, FlatList, HStack, Icon, Spinner, Text, VStack } from "native-base";
+import { useCallback, useState } from "react";
+import { RefreshControl } from "react-native";
 import { JournalItem } from "../../components/JournalItem";
 import useJournals from "../../hooks/useJournals";
 
 export default function JournalListScreen() {
-  const router = useRouter();
   const { journals, fetchJournals, isLoading, error } = useJournals();
+  const [refreshing, setRefreshing] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -18,6 +19,12 @@ export default function JournalListScreen() {
   function addJournal() {
     router.navigate("/journals/JournalAddScreen");
   }
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await fetchJournals();
+    setRefreshing(false);
+  }, [fetchJournals]);
 
   if (isLoading) {
     return (
@@ -46,11 +53,12 @@ export default function JournalListScreen() {
           </Text>
         </VStack>
       )}
-      <ScrollView height="100%">
-        {journals.map((journal) => (
-          <JournalItem journal={journal} key={journal.id} />
-        ))}
-      </ScrollView>
+      <FlatList
+        data={journals}
+        renderItem={JournalItem}
+        keyExtractor={(item) => `${item?.id}`}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+      />
       <Fab
         onPress={addJournal}
         renderInPortal={false}
