@@ -36,8 +36,6 @@ export default function JournalAddScreen() {
     const unsubscribe = navigation.addListener("beforeRemove", async (e) => {
       if (isValid) {
         e.preventDefault();
-        console.log(formData);
-
         await saveJournal(formData);
         navigation.dispatch(e.data.action);
       }

@@ -16,7 +16,6 @@ export function useCategories() {
     try {
       const response = await axios.get("/categories");
       setCategories(response.data);
-      console.log("Categori");
     } catch (e) {
       setError(ResponseError(e));
     } finally {
