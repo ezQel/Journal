@@ -11,7 +11,7 @@ interface CategoryPickerProps {
 }
 
 export function CategoryPicker({ categoryId, onChange }: CategoryPickerProps) {
-  const { categories, fetchCategories, addCategory, isLoading, error, addingError } = useCategories();
+  const { categories, fetchCategories, addCategory, isLoading, error } = useCategories();
   const [category, setCategory] = useState<string>();
   const { isOpen, onOpen, onClose } = useDisclose();
 
@@ -98,7 +98,7 @@ export function CategoryPicker({ categoryId, onChange }: CategoryPickerProps) {
             Categories
           </Modal.Header>
           <Modal.Body>
-            <CategoryManagement isLoading={isLoading} error={addingError} categories={categories} onAdd={addCategory} />
+            <CategoryManagement isLoading={isLoading} error={error} categories={categories} onAdd={addCategory} />
           </Modal.Body>
         </Modal.Content>
       </Modal>

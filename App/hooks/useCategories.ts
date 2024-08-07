@@ -1,3 +1,4 @@
+import { useToast } from "native-base";
 import { useCallback, useState } from "react";
 import { Category } from "../interfaces/category";
 import { ResponseError } from "../utils/response-error";
@@ -7,8 +8,8 @@ export function useCategories() {
   const axios = useAuthAxois();
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [addingError, setAddingError] = useState<Error | null>();
   const [error, setError] = useState<Error | null>();
+  const toast = useToast();
 
   const fetchCategories = useCallback(async () => {
     setIsLoading(true);
@@ -27,19 +28,19 @@ export function useCategories() {
   const addCategory = useCallback(
     async (categoryName: string) => {
       setIsLoading(true);
-      setAddingError(null);
 
       try {
         const { data } = await axios.post("/categories", { categoryName });
         setCategories([...categories, data]);
       } catch (e) {
-        setAddingError(ResponseError(e));
+        const { message: title } = ResponseError(e);
+        toast.show({ title });
       } finally {
         setIsLoading(false);
       }
     },
-    [axios, categories],
+    [axios, categories, toast],
   );
 
-  return { isLoading, error, addingError, categories, fetchCategories, addCategory };
+  return { isLoading, error, categories, fetchCategories, addCategory };
 }
