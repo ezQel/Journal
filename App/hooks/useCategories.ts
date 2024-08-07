@@ -1,12 +1,13 @@
 import { useCallback, useState } from "react";
 import { Category } from "../interfaces/category";
-import { useAuthAxois } from "./useAuthAxios";
 import { ResponseError } from "../utils/response-error";
+import { useAuthAxois } from "./useAuthAxios";
 
 export function useCategories() {
   const axios = useAuthAxois();
-  const [categories, setCategories] = useState<Category[]>();
+  const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [addingError, setAddingError] = useState<Error | null>();
   const [error, setError] = useState<Error | null>();
 
   const fetchCategories = useCallback(async () => {
@@ -23,5 +24,22 @@ export function useCategories() {
     }
   }, [axios]);
 
-  return { isLoading, error, categories, fetchCategories };
+  const addCategory = useCallback(
+    async (categoryName: string) => {
+      setIsLoading(true);
+      setAddingError(null);
+
+      try {
+        const { data } = await axios.post("/categories", { categoryName });
+        setCategories([...categories, data]);
+      } catch (e) {
+        setAddingError(ResponseError(e));
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [axios, categories],
+  );
+
+  return { isLoading, error, addingError, categories, fetchCategories, addCategory };
 }

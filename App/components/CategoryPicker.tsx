@@ -1,19 +1,6 @@
 import { FontAwesome, FontAwesome6 } from "@expo/vector-icons";
 import { useFocusEffect } from "expo-router";
-import {
-  Actionsheet,
-  Box,
-  Button,
-  Divider,
-  HStack,
-  Icon,
-  Menu,
-  Modal,
-  Spinner,
-  Text,
-  useDisclose,
-  VStack,
-} from "native-base";
+import { Button, Divider, HStack, Icon, Menu, Modal, Spinner, Text, useDisclose, VStack } from "native-base";
 import { useCallback, useEffect, useState } from "react";
 import { useCategories } from "../hooks/useCategories";
 import { CategoryManagement } from "./CategoryManagement";
@@ -24,7 +11,7 @@ interface CategoryPickerProps {
 }
 
 export function CategoryPicker({ categoryId, onChange }: CategoryPickerProps) {
-  const { categories, fetchCategories, isLoading, error } = useCategories();
+  const { categories, fetchCategories, addCategory, isLoading, error, addingError } = useCategories();
   const [category, setCategory] = useState<string>();
   const { isOpen, onOpen, onClose } = useDisclose();
 
@@ -111,7 +98,7 @@ export function CategoryPicker({ categoryId, onChange }: CategoryPickerProps) {
             Categories
           </Modal.Header>
           <Modal.Body>
-            <CategoryManagement />
+            <CategoryManagement isLoading={isLoading} error={addingError} categories={categories} onAdd={addCategory} />
           </Modal.Body>
         </Modal.Content>
       </Modal>

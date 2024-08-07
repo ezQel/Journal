@@ -20,7 +20,7 @@ export class CategoryService {
 
     if (category) throw new ConflictException('Category already exists');
 
-    return this.categoryRepository.save({ name: name, user });
+    return this.categoryRepository.save({ name, user });
   }
 
   findUsercategories(user: User): Promise<Category[]> {
