@@ -2,8 +2,9 @@ import { FontAwesome, FontAwesome6 } from "@expo/vector-icons";
 import { useFocusEffect } from "expo-router";
 import { Button, Divider, HStack, Icon, Menu, Modal, Spinner, Text, useDisclose, VStack } from "native-base";
 import { useCallback, useEffect, useState } from "react";
-import { useCategories } from "../hooks/useCategories";
+import { useCategories } from "../../hooks/useCategories";
 import { CategoryManagement } from "./CategoryManagement";
+import { CategoryLoadingError } from "./CategoryLoadingError";
 
 interface CategoryPickerProps {
   categoryId: number | null;
@@ -11,7 +12,7 @@ interface CategoryPickerProps {
 }
 
 export function CategoryPicker({ categoryId, onChange }: CategoryPickerProps) {
-  const { categories, fetchCategories, addCategory, isLoading, error } = useCategories();
+  const { categories, fetchCategories, addCategory, deleteCategory, isLoading, error } = useCategories();
   const [category, setCategory] = useState<string>();
   const { isOpen, onOpen, onClose } = useDisclose();
 
@@ -53,23 +54,12 @@ export function CategoryPicker({ categoryId, onChange }: CategoryPickerProps) {
           );
         }}
       >
-        {error && (
-          <Menu.Item isDisabled>
-            <VStack>
-              <Text fontSize="xs" color="red.500">
-                Failed to load Categories
-              </Text>
-              <Text fontSize="xs" color="gray.500">
-                {error.message}
-              </Text>
-            </VStack>
-          </Menu.Item>
-        )}
+        {error && <CategoryLoadingError message={error.message} />}
         {categories?.map((category) => (
           <Menu.Item key={category.id} onPress={() => onChange(category.id)}>
             <HStack alignItems="center">
               <Text flex="1">{category.name}</Text>
-              <Text>{category.id === categoryId && <Icon as={FontAwesome} name="check" mr="2" />}</Text>
+              {category.id === categoryId && <Icon as={FontAwesome} name="check" mr="2" />}
             </HStack>
           </Menu.Item>
         ))}
@@ -78,7 +68,7 @@ export function CategoryPicker({ categoryId, onChange }: CategoryPickerProps) {
           <HStack alignItems="center">
             <Icon as={FontAwesome} name="close" mr="2" />
             <Text fontSize="xs" fontWeight="medium">
-              Remove category
+              Uncategorize
             </Text>
           </HStack>
         </Menu.Item>
@@ -91,14 +81,19 @@ export function CategoryPicker({ categoryId, onChange }: CategoryPickerProps) {
           </HStack>
         </Menu.Item>
       </Menu>
-      <Modal isOpen={isOpen} onClose={onClose} size="lg">
+      <Modal isOpen={isOpen} onClose={onClose} size="lg" zIndex={0}>
         <Modal.Content>
-          {/* <Modal.CloseButton /> */}
           <Modal.Header borderBottomWidth="0" pb="0">
             Categories
           </Modal.Header>
           <Modal.Body>
-            <CategoryManagement isLoading={isLoading} error={error} categories={categories} onAdd={addCategory} />
+            <CategoryManagement
+              isLoading={isLoading}
+              error={error}
+              categories={categories}
+              onAdd={addCategory}
+              onDelete={deleteCategory}
+            />
           </Modal.Body>
         </Modal.Content>
       </Modal>

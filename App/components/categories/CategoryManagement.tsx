@@ -1,7 +1,7 @@
 import { FontAwesome6 } from "@expo/vector-icons";
 import { Button, Center, HStack, Icon, Input, Spinner, Text, VStack } from "native-base";
-import { Category } from "../interfaces/category";
-import { ErrorAlert } from "./ErrorAlert";
+import { Category } from "../../interfaces/category";
+import { ErrorAlert } from "../ErrorAlert";
 import { useState } from "react";
 
 interface CategoryManagementProps {
@@ -9,9 +9,10 @@ interface CategoryManagementProps {
   error?: Error | null;
   categories?: Category[];
   onAdd: (categoryName: string) => void;
+  onDelete: (categoryId: number) => void;
 }
 
-export function CategoryManagement({ categories, onAdd, isLoading, error }: CategoryManagementProps) {
+export function CategoryManagement({ categories, isLoading, error, onAdd, onDelete }: CategoryManagementProps) {
   const [categoryName, setCategoryName] = useState("");
 
   const categoryForm = (
@@ -23,29 +24,20 @@ export function CategoryManagement({ categories, onAdd, isLoading, error }: Cate
         borderWidth="0"
         borderBottomWidth="1"
         onChangeText={setCategoryName}
+        onSubmitEditing={() => onAdd(categoryName)}
+        autoFocus={true}
       />
-      <Button onPress={() => onAdd(categoryName)} disabled={isLoading}>
+      <Button onPress={() => onAdd(categoryName)} disabled={isLoading || !categoryName}>
         Add
       </Button>
     </HStack>
   );
 
-  if (isLoading) {
-    return (
-      <>
-        {categoryForm}
-        <Center h="24">
-          <Spinner accessibilityLabel="Loading categories" size="sm" />
-        </Center>
-      </>
-    );
-  }
-
   if (error) {
     return (
       <>
         {categoryForm}
-        <ErrorAlert message={error.message} />;
+        <ErrorAlert message={error.message} />
       </>
     );
   }
@@ -71,7 +63,7 @@ export function CategoryManagement({ categories, onAdd, isLoading, error }: Cate
         {categories?.map((category) => (
           <HStack alignItems="center" key={category.name} mb="3">
             <Text flex="1">{category.name}</Text>
-            <Button variant="ghost">
+            <Button onPress={() => onDelete(category.id)} variant="ghost">
               <Icon as={FontAwesome6} name="trash" size="sm" />
             </Button>
           </HStack>

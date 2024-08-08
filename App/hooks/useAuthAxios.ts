@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { apiUrl } from "../config/api";
 import useStore from "./useStore";
 
-export function useAuthAxois(baseUrl?: string) {
+export function useAuthAxios(baseUrl?: string) {
   const store = useStore();
   const [config, setConfig] = useState<AxiosRequestConfig>();
   const router = useRouter();

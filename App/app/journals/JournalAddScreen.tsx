@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { DatePicker } from "../../components/DatePicker";
 import { ErrorAlert } from "../../components/ErrorAlert";
 import useJournals from "../../hooks/useJournals";
-import { CategoryPicker } from "../../components/CategoryPicker";
+import { CategoryPicker } from "../../components/categories/CategoryPicker";
 import { Journal } from "../../interfaces/journal.interface";
 
 export default function JournalAddScreen() {

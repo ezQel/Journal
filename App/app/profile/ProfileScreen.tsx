@@ -1,12 +1,12 @@
 import { useRouter } from "expo-router";
 import { Button, Flex, Text, VStack } from "native-base";
-import { useAuthAxois } from "../../hooks/useAuthAxios";
+import { useAuthAxios } from "../../hooks/useAuthAxios";
 import useStore from "../../hooks/useStore";
 
 export default function ProfileScreen() {
   const store = useStore();
   const router = useRouter();
-  const axios = useAuthAxois();
+  const axios = useAuthAxios();
 
   async function logout() {
     try {

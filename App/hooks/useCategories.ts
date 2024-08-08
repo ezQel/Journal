@@ -2,10 +2,10 @@ import { useToast } from "native-base";
 import { useCallback, useState } from "react";
 import { Category } from "../interfaces/category";
 import { ResponseError } from "../utils/response-error";
-import { useAuthAxois } from "./useAuthAxios";
+import { useAuthAxios } from "./useAuthAxios";
 
 export function useCategories() {
-  const axios = useAuthAxois();
+  const axios = useAuthAxios();
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>();
@@ -34,7 +34,7 @@ export function useCategories() {
         setCategories([...categories, data]);
       } catch (e) {
         const { message: title } = ResponseError(e);
-        toast.show({ title });
+        toast.show({ title, bgColor: "red.500" });
       } finally {
         setIsLoading(false);
       }
@@ -42,5 +42,22 @@ export function useCategories() {
     [axios, categories, toast],
   );
 
-  return { isLoading, error, categories, fetchCategories, addCategory };
+  const deleteCategory = useCallback(
+    async (categoryId: number) => {
+      setIsLoading(true);
+
+      try {
+        await axios.delete(`/categories/${categoryId}`);
+        setCategories(categories.filter((c) => c.id !== categoryId));
+      } catch (e) {
+        const { message: title } = ResponseError(e);
+        toast.show({ title, bgColor: "red.500" });
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [axios, categories, toast],
+  );
+
+  return { isLoading, error, categories, fetchCategories, addCategory, deleteCategory };
 }

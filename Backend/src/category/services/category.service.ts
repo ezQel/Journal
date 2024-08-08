@@ -31,18 +31,12 @@ export class CategoryService {
     });
   }
 
-  findByCategoryName(name: string, user: User): Promise<Category> {
+  findByCategoryName(name: string, user: User): Promise<Category | null> {
     return this.categoryRepository.findOne({ where: { name, user } });
   }
 
-  async findById(id: number, user: User): Promise<Category> {
-    return this.categoryRepository
-      .findOne({ where: { id, user } })
-      .catch(() => {
-        throw new BadRequestException(
-          'Category not found or you do not have permissions to access this category',
-        );
-      });
+  findById(id: number, user: User): Promise<Category | null> {
+    return this.categoryRepository.findOne({ where: { id, user } });
   }
 
   async updateCategoryName(
@@ -54,9 +48,11 @@ export class CategoryService {
 
     if (existingCategory?.id === id) return existingCategory;
 
-    return this.categoryRepository.save({ id, name }).catch(() => {
-      throw new BadRequestException('Category cannot be updated');
-    });
+    try {
+      return await this.categoryRepository.save({ id, name });
+    } catch (e) {
+      throw new BadRequestException('Failed to update category');
+    }
   }
 
   async remove(id: number, user: User): Promise<Category> {
@@ -66,8 +62,10 @@ export class CategoryService {
       throw new BadRequestException('Category does not exist');
     }
 
-    // TODO: Ensure that the category is not attached to a journal
-
-    return this.categoryRepository.remove(category);
+    try {
+      return await this.categoryRepository.remove(category);
+    } catch (e) {
+      throw new BadRequestException('Failed to delete category');
+    }
   }
 }

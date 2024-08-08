@@ -1,10 +1,10 @@
 import { useCallback, useState } from "react";
 import { Journal } from "../interfaces/journal.interface";
 import { ResponseError } from "../utils/response-error";
-import { useAuthAxois } from "./useAuthAxios";
+import { useAuthAxios } from "./useAuthAxios";
 
 export default function useJournals() {
-  const axios = useAuthAxois();
+  const axios = useAuthAxios();
   const [journals, setJournals] = useState<Journal[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
