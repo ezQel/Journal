@@ -1,31 +1,35 @@
-import { useRouter } from "expo-router";
-import { Button, Flex, Text, VStack } from "native-base";
-import { useAuthAxios } from "../../hooks/useAuthAxios";
-import useStore from "../../hooks/useStore";
+import { Button, Flex, HStack, Icon, Spinner, Text, useDisclose, VStack } from "native-base";
+import { useProfile } from "../../hooks/useProfile";
+import ProfileItem from "../../components/ProfileItem";
+import { useFocusEffect } from "expo-router";
+import { useCallback, useState } from "react";
+import { Collapsible } from "../../components/Collapsible";
+import { UsernameUpdate } from "../../components/UsernameUpdate";
+import { LoadingSpinner } from "../../components/LoadingSpinner";
+import { ErrorAlert } from "../../components/ErrorAlert";
 
 export default function ProfileScreen() {
-  const store = useStore();
-  const router = useRouter();
-  const axios = useAuthAxios();
+  const { fetchProfile, updateUsername, changePassword, logout, isLoading, isUpdating, profile, error, updatingError } =
+    useProfile();
+  const { isOpen, onClose, onOpen } = useDisclose();
 
-  async function logout() {
-    try {
-      await axios.post("/auth/logout");
-      await store.clearToken();
-      router.replace("/auth/LoginScreen");
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  useFocusEffect(
+    useCallback(() => {
+      fetchProfile();
+    }, [fetchProfile]),
+  );
+
+  if (isLoading || !profile) return <LoadingSpinner />;
 
   return (
-    <Flex h="100%" p="4">
+    <>
+      {error && <ErrorAlert message={error.message} />}
       <VStack flex="1">
-        <Text>Profile</Text>
+        <ProfileItem onPress={onOpen} iconName="user-pen" title="Username" content={profile?.username} />
+        <ProfileItem iconName="lock" title="Change Password" />
+        <ProfileItem onPress={logout} iconName="arrow-right-from-bracket" title="Logout" />
       </VStack>
-      <Button onPress={logout} variant="outline" colorScheme="secondary">
-        LOG OUT
-      </Button>
-    </Flex>
+      <UsernameUpdate username={profile.username} isOpen={isOpen} onClose={onClose} />
+    </>
   );
 }

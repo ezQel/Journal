@@ -72,7 +72,7 @@ export function CategoryPicker({ categoryId, onChange }: CategoryPickerProps) {
             </Text>
           </HStack>
         </Menu.Item>
-        <Menu.Item onPress={onOpen}>
+        <Menu.Item onPress={onOpen} isDisabled={Boolean(error)}>
           <HStack alignItems="center">
             <Icon as={FontAwesome} name="cog" mr="2" />
             <Text fontSize="xs" fontWeight="medium">

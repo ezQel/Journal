@@ -1,4 +1,6 @@
-import { Body, Controller, Get, Post, Request } from '@nestjs/common';
+import { Body, Controller, Get, Put, Request } from '@nestjs/common';
+import { UpdatePasswordDto } from 'src/auth/dtos/update-password.dto';
+import { UpdateUsernameDto } from '../dtos/update-username.dto';
 import { User } from '../entities/user.entity';
 import { UserService } from '../services/user.service';
 
@@ -12,26 +14,25 @@ export class UserController {
     return this.userService.getProfile(userId);
   }
 
-  @Post('update-username')
+  @Put('update-username')
   updateUsername(
     @Request() req: { user: User },
-    @Body('username') newUsername: string,
+    @Body() updateUsernameDto: UpdateUsernameDto,
   ): Promise<User> {
     const userId = req.user.id;
-    return this.userService.updateUserName(userId, newUsername);
+    return this.userService.updateUserName(userId, updateUsernameDto.username);
   }
 
-  @Post('change-password')
+  @Put('change-password')
   changePassword(
     @Request() req: { user: User },
-    @Body('currentPassword') currentPassword: string,
-    @Body('newPassword') newPassword: string,
+    @Body() updatePasswordDto: UpdatePasswordDto,
   ): Promise<boolean> {
     const userId = req.user.id;
     return this.userService.updatePassword(
       userId,
-      currentPassword,
-      newPassword,
+      updatePasswordDto.currentPassword,
+      updatePasswordDto.newPassword,
     );
   }
 }

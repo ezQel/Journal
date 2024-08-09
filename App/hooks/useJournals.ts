@@ -15,8 +15,8 @@ export default function useJournals() {
     setError(null);
 
     try {
-      const response = await axios.get<Journal[]>("/journals");
-      setJournals(response.data);
+      const { data } = await axios.get<Journal[]>("/journals");
+      setJournals(data);
     } catch (e) {
       setError(ResponseError(e));
     } finally {
