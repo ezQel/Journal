@@ -54,7 +54,7 @@ export function useProfile() {
       setUpdatingError(null);
 
       try {
-        await axios.patch("/user/change-password", { currentPassword, newPassword });
+        await axios.put("/user/change-password", { currentPassword, newPassword });
       } catch (e) {
         const _error = ResponseError(e);
         setUpdatingError(_error);
