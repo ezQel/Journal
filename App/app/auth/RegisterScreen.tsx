@@ -1,8 +1,7 @@
 import { router } from "expo-router";
 import { Button, Center, FormControl, Input, Text, useToast, VStack } from "native-base";
 import { useEffect, useState } from "react";
-import { ErrorAlert } from "../../components/ErrorAlert";
-import { ThemedText } from "../../components/ThemedText";
+import { ErrorAlert } from "../../components/misc/ErrorAlert";
 import useStore from "../../hooks/useStore";
 import { RegistrationInfo } from "../../interfaces/registration-info";
 import authService from "../../services/authService";
@@ -47,7 +46,9 @@ export default function RegisterScreen() {
   return (
     <>
       <Center flex="1">
-        <ThemedText type="title">Register</ThemedText>
+        <Text fontSize="2xl" fontWeight="bold">
+          Register
+        </Text>
         <Text fontSize="sm" mt="3">
           Create an account to start journaling
         </Text>

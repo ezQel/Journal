@@ -1,12 +1,12 @@
 import { useFocusEffect } from "expo-router";
 import { useDisclose, VStack } from "native-base";
 import { useCallback } from "react";
-import { ErrorAlert } from "../../components/ErrorAlert";
-import { LoadingSpinner } from "../../components/LoadingSpinner";
-import ProfileItem from "../../components/ProfileItem";
-import { UsernameUpdate } from "../../components/UsernameUpdate";
+import { ErrorAlert } from "../../components/misc/ErrorAlert";
+import { LoadingSpinner } from "../../components/misc/LoadingSpinner";
+import ProfileItem from "../../components/profile/ProfileItem";
+import { UsernameUpdate } from "../../components/profile/UsernameUpdate";
 import { useProfile } from "../../hooks/useProfile";
-import { PasswordChange } from "../../components/passwordChange";
+import { PasswordChange } from "../../components/profile/passwordChange";
 
 export default function ProfileScreen() {
   const { fetchProfile, logout, isLoading, profile, error } = useProfile();

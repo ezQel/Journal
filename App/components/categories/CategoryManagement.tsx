@@ -1,7 +1,7 @@
 import { FontAwesome6 } from "@expo/vector-icons";
 import { Button, Center, HStack, Icon, Input, Spinner, Text, VStack } from "native-base";
 import { Category } from "../../interfaces/category";
-import { ErrorAlert } from "../ErrorAlert";
+import { ErrorAlert } from "../misc/ErrorAlert";
 import { useState } from "react";
 
 interface CategoryManagementProps {

@@ -1,9 +1,8 @@
 import { useFocusEffect, useLocalSearchParams } from "expo-router";
-import { Text } from "native-base";
-import JournalAddScreen from "../JournalAddScreen";
-import useJournals from "../../../hooks/useJournals";
 import { useCallback } from "react";
-import { LoadingSpinner } from "../../../components/LoadingSpinner";
+import { LoadingSpinner } from "../../../components/misc/LoadingSpinner";
+import useJournals from "../../../hooks/useJournals";
+import JournalAddScreen from "../JournalAddScreen";
 
 export default function JournalEditScreen() {
   const { journalId } = useLocalSearchParams<{ journalId: string }>();

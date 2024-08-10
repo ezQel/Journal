@@ -3,10 +3,10 @@ import { format } from "date-fns";
 import { router, Stack, useNavigation } from "expo-router";
 import { Button, HStack, Icon, Input, TextArea, useToast, VStack } from "native-base";
 import { useEffect, useState } from "react";
-import { DatePicker } from "../../components/DatePicker";
-import { ErrorAlert } from "../../components/ErrorAlert";
-import useJournals from "../../hooks/useJournals";
 import { CategoryPicker } from "../../components/categories/CategoryPicker";
+import { DatePicker } from "../../components/misc/DatePicker";
+import { ErrorAlert } from "../../components/misc/ErrorAlert";
+import useJournals from "../../hooks/useJournals";
 import { Journal } from "../../interfaces/journal.interface";
 
 interface JournalAddScreenProps {

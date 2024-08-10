@@ -1,7 +1,7 @@
 import { Button, HStack, Input, Modal, useToast } from "native-base";
 import { useState } from "react";
-import { useProfile } from "../hooks/useProfile";
-import { ErrorAlert } from "./ErrorAlert";
+import { useProfile } from "../../hooks/useProfile";
+import { ErrorAlert } from "../misc/ErrorAlert";
 
 interface UsernameUpdateProps {
   username: string;

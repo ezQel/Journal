@@ -2,10 +2,10 @@ import { FontAwesome6 } from "@expo/vector-icons";
 import { router, Stack, useFocusEffect, useLocalSearchParams } from "expo-router";
 import { Box, Button, HStack, Icon, ScrollView, Text, useToast } from "native-base";
 import { useCallback } from "react";
-import { ErrorAlert } from "../../../components/ErrorAlert";
-import { LoadingSpinner } from "../../../components/LoadingSpinner";
-import useJournals from "../../../hooks/useJournals";
 import { Alert } from "react-native";
+import { ErrorAlert } from "../../../components/misc/ErrorAlert";
+import { LoadingSpinner } from "../../../components/misc/LoadingSpinner";
+import useJournals from "../../../hooks/useJournals";
 
 export default function JournalViewScreen() {
   const { journalId } = useLocalSearchParams<{ journalId: string }>();

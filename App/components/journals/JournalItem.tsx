@@ -1,7 +1,7 @@
 import { formatDate } from "date-fns";
 import { router } from "expo-router";
 import { Box, Center, HStack, Text } from "native-base";
-import { Journal } from "../interfaces/journal.interface";
+import { Journal } from "../../interfaces/journal.interface";
 
 interface JournalProps {
   item: Journal;

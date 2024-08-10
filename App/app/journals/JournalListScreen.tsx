@@ -3,7 +3,7 @@ import { router, useFocusEffect } from "expo-router";
 import { Alert, Fab, FlatList, HStack, Icon, Spinner, Text, VStack } from "native-base";
 import { useCallback, useState } from "react";
 import { RefreshControl } from "react-native";
-import { JournalItem } from "../../components/JournalItem";
+import { JournalItem } from "../../components/journals/JournalItem";
 import useJournals from "../../hooks/useJournals";
 
 export default function JournalListScreen() {

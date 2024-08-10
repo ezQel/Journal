@@ -1,9 +1,8 @@
 import { router } from "expo-router";
 import { Button, Center, FormControl, Input, Text, VStack } from "native-base";
 import { useEffect, useState } from "react";
-import { ErrorAlert } from "../../components/ErrorAlert";
+import { ErrorAlert } from "../../components/misc/ErrorAlert";
 import { TabBarIcon } from "../../components/navigation/TabBarIcon";
-import { ThemedText } from "../../components/ThemedText";
 import useStore from "../../hooks/useStore";
 import { LoginCredentials } from "../../interfaces/login-credentials";
 import authService from "../../services/authService";
@@ -31,8 +30,8 @@ export default function LoginScreen() {
       const response = await authService.login(formData);
       await store.setToken(response.accessToken);
       router.replace("/(tabs)");
-    } catch (e: any) {
-      setErrorMessage(e.message);
+    } catch (e: unknown) {
+      setErrorMessage((e as Error)?.message);
     }
   }
 
@@ -44,7 +43,9 @@ export default function LoginScreen() {
     <>
       <Center flex={1}>
         <TabBarIcon name="book" size={48} style={{ marginBottom: 12 }} />
-        <ThemedText type="title">Log your life</ThemedText>
+        <Text fontSize="2xl" fontWeight="bold">
+          Log your life
+        </Text>
         <Text fontSize="sm" mt="3">
           Log in to start journaling
         </Text>
