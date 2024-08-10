@@ -23,7 +23,7 @@ export default function JournalViewScreen() {
   }
 
   function deleteJournal() {
-    Alert.alert("Delete Journal Entry?", "This action cannot be undone.", [
+    Alert.alert("Delete journal entry?", "This action cannot be undone.", [
       {
         text: "Cancel",
         style: "cancel",
