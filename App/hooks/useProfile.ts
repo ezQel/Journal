@@ -38,9 +38,7 @@ export function useProfile() {
       try {
         await axios.put("/user/update-username", { username });
       } catch (e) {
-        const _error = ResponseError(e);
-        setUpdatingError(_error);
-        throw _error;
+        setUpdatingError(ResponseError(e));
       } finally {
         setIsUpdating(false);
       }
@@ -56,9 +54,7 @@ export function useProfile() {
       try {
         await axios.put("/user/change-password", { currentPassword, newPassword });
       } catch (e) {
-        const _error = ResponseError(e);
-        setUpdatingError(_error);
-        throw _error;
+        setUpdatingError(ResponseError(e));
       } finally {
         setIsUpdating(false);
       }

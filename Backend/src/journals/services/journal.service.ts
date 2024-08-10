@@ -32,6 +32,7 @@ export class JournalService {
   async findById(id: number, user: User): Promise<Journal> {
     const journal = await this.journalRepository.findOne({
       where: { id, user },
+      relations: ['category'],
     });
 
     if (!journal) throw new BadRequestException('Journal not found');

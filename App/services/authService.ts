@@ -24,13 +24,4 @@ async function login(credentials: LoginCredentials): Promise<LoginResponse> {
   }
 }
 
-async function logout(): Promise<void> {
-  try {
-    // TODO: Call logout in authenticated state
-    await axios.post(apiUrl + "/auth/logout");
-  } catch (e) {
-    throw ResponseError(e);
-  }
-}
-
-export default { register, login, logout };
+export default { register, login };

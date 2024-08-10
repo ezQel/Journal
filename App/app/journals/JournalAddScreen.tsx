@@ -9,17 +9,27 @@ import useJournals from "../../hooks/useJournals";
 import { CategoryPicker } from "../../components/categories/CategoryPicker";
 import { Journal } from "../../interfaces/journal.interface";
 
-export default function JournalAddScreen() {
-  const initialFormValue: Pick<Journal, "date" | "title" | "content" | "categoryId"> = {
-    date: format(new Date(), "yyyy-MM-dd"),
-    title: "",
-    content: "",
-    categoryId: null,
-  };
+interface JournalAddScreenProps {
+  journal?: Journal;
+}
+
+export default function JournalAddScreen({ journal }: JournalAddScreenProps) {
+  const initialFormValue: Pick<Journal, "id" | "date" | "title" | "content" | "categoryId"> = journal
+    ? {
+        ...journal,
+        categoryId: journal?.category?.id,
+      }
+    : {
+        id: null,
+        date: format(new Date(), "yyyy-MM-dd"),
+        title: "",
+        content: "",
+        categoryId: null,
+      };
 
   const [formData, setFormData] = useState(initialFormValue);
   const [isValid, setIsValid] = useState(false);
-  const { isSaving, error, saveJournal } = useJournals();
+  const { isSaving, error, saveJournal, updateJournal } = useJournals();
   const navigation = useNavigation();
   const toast = useToast();
 
@@ -36,13 +46,19 @@ export default function JournalAddScreen() {
     const unsubscribe = navigation.addListener("beforeRemove", async (e) => {
       if (isValid) {
         e.preventDefault();
-        await saveJournal(formData);
+
+        if (formData.id) {
+          await updateJournal(formData.id, formData);
+        } else {
+          await saveJournal(formData);
+        }
+
         navigation.dispatch(e.data.action);
       }
     });
 
     return unsubscribe;
-  }, [navigation, isValid, formData, toast, saveJournal]);
+  }, [navigation, isValid, formData, toast, saveJournal, updateJournal]);
 
   async function handleSave() {
     router.back();
@@ -75,6 +91,7 @@ export default function JournalAddScreen() {
         </HStack>
         <VStack flex="1">
           <Input
+            value={formData.title}
             onChangeText={(value) => setFormData({ ...formData, title: value })}
             placeholder="Title"
             borderWidth="0"
@@ -84,6 +101,7 @@ export default function JournalAddScreen() {
             w="100%"
           />
           <TextArea
+            value={formData.content}
             flexGrow="1"
             onChangeText={(value) => setFormData({ ...formData, content: value })}
             placeholder="Write your thoughts here..."
@@ -91,7 +109,6 @@ export default function JournalAddScreen() {
             fontSize="md"
             backgroundColor="none"
             autoCompleteType="none"
-            selectionColor="primary.500"
             w="100%"
           />
         </VStack>

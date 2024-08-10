@@ -33,7 +33,14 @@ export default function RootLayout() {
           <Stack.Screen name="(tabs)" options={{ headerShown: false }}></Stack.Screen>
           <Stack.Screen name="auth/LoginScreen" options={{ headerShown: false }}></Stack.Screen>
           <Stack.Screen name="auth/RegisterScreen" options={{ headerShown: false }}></Stack.Screen>
-          <Stack.Screen name="journals/[id]"></Stack.Screen>
+          <Stack.Screen
+            name="journals/[journalId]/JournalViewScreen"
+            options={{ title: "", headerShadowVisible: false, headerStyle: { backgroundColor: "#f2f2f2" } }}
+          ></Stack.Screen>
+          <Stack.Screen
+            name="journals/[journalId]/JournalEditScreen"
+            options={{ title: "", headerShadowVisible: false, headerStyle: { backgroundColor: "#f2f2f2" } }}
+          ></Stack.Screen>
           <Stack.Screen name="journals/JournalAddScreen"></Stack.Screen>
         </Stack>
       </ThemeProvider>

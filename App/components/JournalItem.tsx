@@ -1,6 +1,6 @@
 import { formatDate } from "date-fns";
 import { router } from "expo-router";
-import { Badge, Box, Center, Flex, HStack, Text, VStack } from "native-base";
+import { Box, Center, HStack, Text } from "native-base";
 import { Journal } from "../interfaces/journal.interface";
 
 interface JournalProps {
@@ -9,7 +9,7 @@ interface JournalProps {
 
 export function JournalItem({ item }: JournalProps) {
   function viewJournal(journalId: number) {
-    router.navigate(`/journals/${journalId}`);
+    router.navigate(`/journals/${journalId}/JournalViewScreen`);
   }
 
   function getContentPreview(): string {
@@ -17,26 +17,26 @@ export function JournalItem({ item }: JournalProps) {
   }
 
   return (
-    <HStack onTouchEnd={() => viewJournal(item.id)} background="white" mx="3" my="1" p="4" rounded="lg" key={item.id}>
+    <HStack onTouchEnd={() => viewJournal(item.id!)} background="white" mx="3" my="1" p="4" rounded="lg" key={item.id}>
       <Center mr="4">
         <Text fontWeight="medium" fontSize="xs" color="gray.400">
           {formatDate(item.date, "eee")}
         </Text>
         <Text fontSize="xl" fontWeight="extrabold" color="gray.400">
-          {formatDate(item.date, "d")}
+          {formatDate(item.date, "dd")}
         </Text>
       </Center>
       <Box flex="1">
-        <HStack>
+        <HStack alignItems="center">
           <Text fontSize="md" fontWeight="semibold" color="gray.700">
             {item.title || <Text color="gray.200">Untitled</Text>}
           </Text>
           {item.category && (
-            <Badge rounded="lg" p="0.5" ml="3">
-              <Text fontSize="xs" fontWeight="medium">
+            <Box rounded="lg" ml="3" px="2" backgroundColor="blue.100">
+              <Text fontSize="xs" color="blue.800">
                 {item.category.name}
               </Text>
-            </Badge>
+            </Box>
           )}
         </HStack>
         <Text color="gray.500">{getContentPreview()}... </Text>

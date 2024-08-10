@@ -19,7 +19,10 @@ export function PasswordChange({ isOpen, onClose }: PasswordChangeProps) {
   }, [formData]);
 
   async function save() {
-    await changePassword(formData.currentPassword, formData.newPassword);
+    changePassword(formData.currentPassword, formData.newPassword);
+
+    if (updatingError) return;
+
     toast.show({ title: "Password changed successfully" });
     onClose();
   }

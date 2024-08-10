@@ -15,7 +15,10 @@ export function UsernameUpdate({ username, isOpen, onClose }: UsernameUpdateProp
   const toast = useToast();
 
   async function update() {
-    await updateUsername(newUsername);
+    updateUsername(newUsername);
+
+    if (updatingError) return;
+
     toast.show({ title: "Username updated" });
     onClose();
   }

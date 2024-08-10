@@ -26,7 +26,7 @@ export default function JournalListScreen() {
     setRefreshing(false);
   }, [fetchJournals]);
 
-  if (isLoading) {
+  if (isLoading && !refreshing) {
     return (
       <HStack space={2} justifyContent="center">
         <Spinner accessibilityLabel="Loading posts" />

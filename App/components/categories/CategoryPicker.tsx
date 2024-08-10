@@ -36,7 +36,7 @@ export function CategoryPicker({ categoryId, onChange }: CategoryPickerProps) {
 
   if (isLoading) {
     return (
-      <Button variant="subtle" colorScheme="secondary" size="sm" p="1" ml="2">
+      <Button variant="subtle" colorScheme="primary" size="sm" p="1" ml="2">
         <Spinner accessibilityLabel="Loading categories" size="sm" />
       </Button>
     );
@@ -48,7 +48,15 @@ export function CategoryPicker({ categoryId, onChange }: CategoryPickerProps) {
         w="190"
         trigger={(triggerProps) => {
           return (
-            <Button variant="subtle" colorScheme="secondary" size="sm" p="1" ml="2" {...triggerProps}>
+            <Button
+              variant="subtle"
+              backgroundColor="blue.100"
+              color="blue.700"
+              size="sm"
+              p="1"
+              ml="2"
+              {...triggerProps}
+            >
               {error ? <Icon as={FontAwesome6} name="circle-exclamation" /> : category}
             </Button>
           );
