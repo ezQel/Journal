@@ -6,6 +6,7 @@ import { Alert } from "react-native";
 import { ErrorAlert } from "../../../components/misc/ErrorAlert";
 import { LoadingSpinner } from "../../../components/misc/LoadingSpinner";
 import useJournals from "../../../hooks/useJournals";
+import { formatDate } from "date-fns";
 
 export default function JournalViewScreen() {
   const { journalId } = useLocalSearchParams<{ journalId: string }>();
@@ -62,6 +63,9 @@ export default function JournalViewScreen() {
         }}
       />
       <ScrollView px="4">
+        <Text fontWeight="bold" color="gray.400" mb="2">
+          {journal?.date && formatDate(journal.date, "eee, d LLL yyyy")}
+        </Text>
         <HStack alignItems="center">
           <Text fontWeight="medium" fontSize="lg" mb="2" selectable={true}>
             {journal?.title}
