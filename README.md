@@ -18,36 +18,36 @@ This project contains code for the backend and frontend of a personal journaling
 
 ## Features & Screenshots
 
-1. View List of Journals
-   ![Journals](./Screenshots/list.jpg)
+### View List of Journals
+<img src="./Screenshots/list.jpg" alt="Journals" width="300" />
 
-2. Add a journal entry
-   ![Add Journal](./Screenshots/add.jpg)
-   ![Categorize Journal](./Screenshots/add-2.jpg)
+### Add a journal entry
+<img src="./Screenshots/add.jpg" alt="Add Journal" width="300" />
+<img src="./Screenshots/add-2.jpg" alt="Categorize Journal" width="300" />
 
-3. Manage journal categories
-   ![manage Categories](./Screenshots/manage-categories.jpg)
+### Manage journal categories
+<img src="./Screenshots/manage-categories.jpg" alt="manage Categories" width="300" />
 
-4. View an entry
-   ![View Journal](./Screenshots/view.jpg)
+### View an entry
+<img src="./Screenshots/view.jpg" alt="View Journal" width="300" />
 
-5. Delete an entry
-   ![Delete Journal](./Screenshots/delete.jpg)
+### Delete an entry
+<img src="./Screenshots/delete.jpg" alt="Delete Journal" width="300" />
 
-6. Edit an entry
-   ![Edit Journal](./Screenshots/edit.jpg)
+### Edit an entry
+<img src="./Screenshots/edit.jpg" alt="Edit Journal" width="300" />
 
-7. Log in
-   ![Log In](./Screenshots/login.jpg)
+### Log in
+<img src="./Screenshots/login.jpg" alt="Log In" width="300" />
 
-8. Create an account
-   ![Register](./Screenshots/register.jpg)
+### Create an account
+<img src="./Screenshots/register.jpg" alt="Register" width="300" />
 
-9. View profile
-   ![Profile](./Screenshots/profile.jpg)
+### View profile
+<img src="./Screenshots/profile.jpg" alt="Profile" width="300" />
 
-10. Change username
-    ![Change Username](./Screenshots/update-username.jpg)
+### Change username
+<img src="./Screenshots/update-username.jpg" alt="Change Username" width="300" />
 
-11. Change password
-    ![Change Password](./Screenshots/change-password.jpg)
+### Change password
+<img src="./Screenshots/change-password.jpg" alt="Change Password" width="300" />
