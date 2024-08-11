@@ -26,8 +26,6 @@ export class CategoryService {
   findUsercategories(user: User): Promise<Category[]> {
     return this.categoryRepository.find({
       where: { user },
-      relations: ['user'],
-      select: ['user'],
     });
   }
 
