@@ -46,6 +46,7 @@ export class JournalService {
     user: User,
   ): Promise<Journal> {
     await this.findById(id, user); // Validate journal existence and ownership
+    updateJournalDto.category = { id: updateJournalDto.categoryId };
     return this.journalRepository.save({ id, ...updateJournalDto });
   }
 
