@@ -35,3 +35,7 @@ $ npm run start:dev
 # production mode
 $ npm run start:prod
 ```
+
+## API documentation
+
+The API is documented [here on Postman.](https://documenter.getpostman.com/view/19263029/2sA3s4nquw).
