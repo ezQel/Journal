@@ -21,7 +21,7 @@ DB_DATABASE=journal
 ```
 
 > [!NOTE]
-> Postgres is the prefered database for this project bu that can be changed in the TypeORM configuration in the app module.
+> Postgres is the prefered database for this project but that can be changed in the TypeORM configuration within the app module.
 
 ## Running the app
 
