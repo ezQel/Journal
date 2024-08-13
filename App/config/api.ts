@@ -1,3 +1,3 @@
-const apiUrl = "http://192.168.100.4:3000";
+const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
 export { apiUrl };
