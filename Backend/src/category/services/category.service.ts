@@ -42,9 +42,9 @@ export class CategoryService {
     name: string,
     user: User,
   ): Promise<Category> {
-    const existingCategory = await this.findByCategoryName(name, user);
+    const category = await this.findById(id, user);
 
-    if (existingCategory?.id === id) return existingCategory;
+    if (!category) throw new BadRequestException('Category not found');
 
     try {
       return await this.categoryRepository.save({ id, name });
